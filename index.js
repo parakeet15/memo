@@ -1,7 +1,7 @@
 'use strict';
 
-const databaseName = 'diary';
-const storeName = 'diaries';
+const databaseName = 'memo';
+const storeName = 'memoes';
 
 let database = null;
 
