@@ -43,13 +43,19 @@ function save() {
   const putRequest = objectStore.put(memo);
 
   putRequest.onsuccess = event => {
-    const id = event.target.result;
-    console.info(`Key path: ${id}`);
-    console.info('データを正常に保存しました');
+    const div = document.createElement('div');
+    const h3 = document.createElement('h3');
+    const p = document.createElement('p');
+    div.dataset.id = event.target.result;
+    h3.innerText = title;
+    p.innerText = body;
+    div.appendChild(h3);
+    div.appendChild(p);
+    document.getElementById('memoes').appendChild(div);
   }
 
   transaction.oncomplete = () => {
-    console.info('トランザクションが完了しました');
+    console.info('トランザクションが正常に完了しました');
   }
 }
 

@@ -1,0 +1,17 @@
+* {
+  display: block;
+}
+
+#title {
+  width: 300px;
+  height: auto;
+}
+
+#body {
+  width: 300px;
+  height: auto;
+}
+
+div {
+  background: #777777;
+}

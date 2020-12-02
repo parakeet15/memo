@@ -3,12 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="index.css">
   <title>Memo</title>
 </head>
 <body>
-  <div><input type="text" id="title"></div>
-  <div><textarea id="body"></textarea></div>
-  <div><button onclick="save()">Save</button></div>
+  <h3>新規作成</h3>
+  <input type="text" id="title">
+  <textarea id="body"></textarea>
+  <button onclick="save()">Save</button>
+
+  <h3>保存したメモ</h3>
+  <div id="memoes"></div>
   <script src="index.js"></script>
 </body>
 </html>
