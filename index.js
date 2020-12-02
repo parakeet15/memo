@@ -36,7 +36,7 @@ function save() {
   const body = document.getElementById('body');
   const writeDate = new Date().toLocaleString();
 
-  const memo = { id, title, body, writeDate };
+  const memo = { title, body, writeDate };
 
   const transaction = database.transaction(storeName, 'readwrite');
   const objectStore = transaction.objectStore(storeName);
