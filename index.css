@@ -12,6 +12,7 @@
   height: auto;
 }
 
-div {
+#container {
   background: #777777;
+  margin: 10px;
 }

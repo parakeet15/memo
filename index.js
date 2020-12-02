@@ -71,6 +71,7 @@ function output(id) {
     const title = document.createElement('h3');
     const body = document.createElement('p');
     const writeDate = document.createElement('p');
+    container.className = 'container';
     container.dataset.id = id;
     title.innerText = memo.title;
     body.innerText = memo.body;
