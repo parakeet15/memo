@@ -12,7 +12,11 @@
   height: auto;
 }
 
-#container {
+#memos {
   background: #777777;
+}
+
+.container {
+  background: #ffffff;
   margin: 10px;
 }
