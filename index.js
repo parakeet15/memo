@@ -42,7 +42,9 @@ function save() {
   const objectStore = transaction.objectStore(storeName);
   const putRequest = objectStore.put(memo);
 
-  putRequest.onsuccess = () => {
+  putRequest.onsuccess = event => {
+    const id = event.target.result;
+    console.info(`Key path: ${id}`);
     console.info('データを正常に保存しました');
   }
 
