@@ -17,12 +17,21 @@ window.onload = () => {
     database = event.target.result;
     const objectStore = database.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
     objectStore.createIndex('title', 'title', { unique: false });
-    objectStore.createIndex('body', 'body', { unique: false });
-    objectStore.createIndex('writeDate', 'writeDate', { unique: false });
+    // objectStore.createIndex('body', 'body', { unique: false });
+    // objectStore.createIndex('writeDate', 'writeDate', { unique: false });
   }
 
   openRequest.onsuccess = event => {
     database = event.target.result;
+    const transaction = database.transaction(storeName, 'readonly');
+    const objectStore = transaction.objectStore(storeName);
+    const index = objectStore.index('title');
+    const getAllKeysRequest = index.getAllKeys();
+    getAllKeysRequest.onsuccess = e => {
+      console.log(getAllKeysRequest.result);
+      console.log(e.target.result);
+      console.log(e.target);
+    }
 
     // 汎用エラーハンドラ
     database.onerror = event => {
@@ -52,6 +61,7 @@ function save() {
     div.appendChild(h3);
     div.appendChild(p);
     document.getElementById('memoes').appendChild(div);
+    div.onclick = e => read(e.target.dataset.id);
   }
 
   transaction.oncomplete = () => {
@@ -59,21 +69,21 @@ function save() {
   }
 }
 
-// function read() {
-//   const transaction = database.transaction(storeName, 'readonly');
-//   const objectStore = transaction.objectStore(storeName);
-//   const getRequest = objectStore.get(/* diary_id */);
+function read(id) {
+  const transaction = database.transaction(storeName, 'readonly');
+  const objectStore = transaction.objectStore(storeName);
+  const getRequest = objectStore.get(id);
 
-//   getRequest.onsuccess = event => {
-//     const diary = event.target.result;
-//     title.innerText = diary.title;
-//     content.innerText = diary.content;
-//     writeDate.innerText = diary.writeDate;
+  getRequest.onsuccess = event => {
+    const diary = event.target.result;
+    title.innerText = diary.title;
+    content.innerText = diary.content;
+    writeDate.innerText = diary.writeDate;
 
-//     console.info('データを正常に取得しました');
-//   }
+    console.info('データを正常に取得しました');
+  }
 
-//   transaction.oncomplete = () => {
-//     console.info('トランザクションが完了しました');
-//   }
-// }
+  transaction.oncomplete = () => {
+    console.info('トランザクションが完了しました');
+  }
+}
