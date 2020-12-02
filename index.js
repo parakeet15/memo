@@ -40,7 +40,7 @@ function save() {
 
   const transaction = database.transaction(storeName, 'readwrite');
   const objectStore = transaction.objectStore(storeName);
-  const putRequest = objectStore.add(memo);
+  const putRequest = objectStore.put(memo);
 
   putRequest.onsuccess = () => {
     console.info('データを正常に保存しました');
