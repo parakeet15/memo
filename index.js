@@ -28,8 +28,8 @@ window.onload = () => {
     const objectStore = transaction.objectStore(storeName);
     const getAllKeysRequest = objectStore.getAllKeys();
     getAllKeysRequest.onsuccess = e => {
-      const keys = e.target.result;
-      keys.forEach(id => output(id));
+      const allKeys = e.target.result;
+      allKeys.forEach(id => output(id));
     }
 
     // 汎用エラーハンドラ
@@ -67,16 +67,19 @@ function output(id) {
 
   getRequest.onsuccess = event => {
     const memo = event.target.result;
-    const div = document.createElement('div');
-    const h3 = document.createElement('h3');
-    const p = document.createElement('p');
-    div.dataset.id = id;
-    h3.innerText = memo.title;
-    p.innerText = memo.body;
-    div.appendChild(h3);
-    div.appendChild(p);
-    document.getElementById('memoes').appendChild(div);
-    div.onclick = e => read(e.target.dataset.id);
+    const container = document.createElement('div');
+    const title = document.createElement('h3');
+    const body = document.createElement('p');
+    const writeDate = document.createElement('p');
+    container.dataset.id = id;
+    title.innerText = memo.title;
+    body.innerText = memo.body;
+    writeDate.innerText = memo.writeDate;
+    container.appendChild(title);
+    container.appendChild(body);
+    container.appendChild(writeDate);
+    document.getElementById('memoes').appendChild(container);
+    container.onclick = e => read(e.target.dataset.id);
 
     console.info('データを正常に取得しました');
   }
