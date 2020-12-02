@@ -15,8 +15,9 @@ window.onload = () => {
 
   openRequest.onupgradeneeded = event => {
     database = event.target.result;
-    const objectStore = database.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
-    objectStore.createIndex('title', 'title', { unique: false });
+    database.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+    // const objectStore = database.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+    // objectStore.createIndex('title', 'title', { unique: false });
     // objectStore.createIndex('body', 'body', { unique: false });
     // objectStore.createIndex('writeDate', 'writeDate', { unique: false });
   }
@@ -25,12 +26,10 @@ window.onload = () => {
     database = event.target.result;
     const transaction = database.transaction(storeName, 'readonly');
     const objectStore = transaction.objectStore(storeName);
-    const index = objectStore.index('title');
-    const getAllKeysRequest = index.getAllKeys();
+    const getAllKeysRequest = objectStore.getAllKeys();
     getAllKeysRequest.onsuccess = e => {
-      console.log(getAllKeysRequest.result);
-      console.log(e.target.result);
-      console.log(e.target);
+      const keys = e.target.result;
+      keys.forEach(id => output(id));
     }
 
     // 汎用エラーハンドラ
@@ -52,16 +51,8 @@ function save() {
   const putRequest = objectStore.put(memo);
 
   putRequest.onsuccess = event => {
-    const div = document.createElement('div');
-    const h3 = document.createElement('h3');
-    const p = document.createElement('p');
-    div.dataset.id = event.target.result;
-    h3.innerText = title;
-    p.innerText = body;
-    div.appendChild(h3);
-    div.appendChild(p);
-    document.getElementById('memoes').appendChild(div);
-    div.onclick = e => read(e.target.dataset.id);
+    const id = event.target.result;
+    output(id);
   }
 
   transaction.oncomplete = () => {
@@ -69,16 +60,23 @@ function save() {
   }
 }
 
-function read(id) {
+function output(id) {
   const transaction = database.transaction(storeName, 'readonly');
   const objectStore = transaction.objectStore(storeName);
   const getRequest = objectStore.get(id);
 
   getRequest.onsuccess = event => {
-    const diary = event.target.result;
-    title.innerText = diary.title;
-    content.innerText = diary.content;
-    writeDate.innerText = diary.writeDate;
+    const memo = event.target.result;
+    const div = document.createElement('div');
+    const h3 = document.createElement('h3');
+    const p = document.createElement('p');
+    div.dataset.id = id;
+    h3.innerText = memo.title;
+    p.innerText = memo.body;
+    div.appendChild(h3);
+    div.appendChild(p);
+    document.getElementById('memoes').appendChild(div);
+    div.onclick = e => read(e.target.dataset.id);
 
     console.info('データを正常に取得しました');
   }
