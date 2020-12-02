@@ -32,8 +32,8 @@ window.onload = () => {
 }
 
 function save() {
-  const title = document.getElementById('title');
-  const body = document.getElementById('body');
+  const title = document.getElementById('title').value;
+  const body = document.getElementById('body').value;
   const writeDate = new Date().toLocaleString();
 
   const memo = { title, body, writeDate };
