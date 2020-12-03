@@ -88,7 +88,7 @@ function output(id) {
     container.appendChild(writeDate);
     document.getElementById('memoes').appendChild(container);
 
-    container.onclick = e => del(e.target.dataset.id);
+    container.onclick = (e) => del(e.target.dataset.id);
   }
 
   transaction.oncomplete = () => {
@@ -97,6 +97,7 @@ function output(id) {
 }
 
 function del(id) {
+  console.log(id);
   const transaction = database.transaction(storeName, 'readwrite');
   const objectStore = transaction.objectStore(storeName);
   const deleteRequest = objectStore.delete(id);
