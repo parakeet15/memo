@@ -88,7 +88,7 @@ function output(id) {
     container.appendChild(writeDate);
     document.getElementById('memoes').appendChild(container);
 
-    container.onclick = e => read(e.target.dataset.id);
+    // container.onclick = e => read(e.target.dataset.id);
   }
 
   transaction.oncomplete = () => {
