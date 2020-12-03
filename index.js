@@ -60,6 +60,9 @@ function save() {
   }
 }
 
+const saveButton = document.getElementById('save-button');
+saveButton.addEventListener('click', save);
+
 function output(id) {
   const transaction = database.transaction(storeName, 'readonly');
   const objectStore = transaction.objectStore(storeName);
@@ -67,22 +70,25 @@ function output(id) {
 
   getRequest.onsuccess = event => {
     const memo = event.target.result;
+
     const container = document.createElement('div');
     const title = document.createElement('h3');
     const body = document.createElement('p');
     const writeDate = document.createElement('p');
+
     container.className = 'container';
     container.dataset.id = id;
+
     title.innerText = memo.title;
     body.innerText = memo.body;
     writeDate.innerText = memo.writeDate;
+
     container.appendChild(title);
     container.appendChild(body);
     container.appendChild(writeDate);
     document.getElementById('memoes').appendChild(container);
-    container.onclick = e => read(e.target.dataset.id);
 
-    console.info('データを正常に取得しました');
+    container.onclick = e => read(e.target.dataset.id);
   }
 
   transaction.oncomplete = () => {
