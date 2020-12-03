@@ -88,10 +88,24 @@ function output(id) {
     container.appendChild(writeDate);
     document.getElementById('memoes').appendChild(container);
 
-    // container.onclick = e => read(e.target.dataset.id);
+    container.onclick = e => del(e.target.dataset.id);
   }
 
   transaction.oncomplete = () => {
     console.info('トランザクションが完了しました');
+  }
+}
+
+function del(id) {
+  const transaction = database.transaction(storeName, 'readwrite');
+  const objectStore = transaction.objectStore(storeName);
+  const deleteRequest = objectStore.delete(id);
+
+  deleteRequest.onsuccess = event => {
+    document.querySelector(`div[data-id="${id}"]`).remove();
+  }
+
+  transaction.oncomplete = () => {
+    console.info('削除が完了しました');
   }
 }
