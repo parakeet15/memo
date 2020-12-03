@@ -100,10 +100,10 @@ function del(id) {
   console.log(id);
   const transaction = database.transaction(storeName, 'readwrite');
   const objectStore = transaction.objectStore(storeName);
-  const deleteRequest = objectStore.delete(id);
+  const deleteRequest = objectStore.clear();
 
   deleteRequest.onsuccess = event => {
-    document.querySelector(`div[data-id="${id}"]`).remove();
+    // document.querySelector(`div[data-id="${id}"]`).remove();
   }
 
   transaction.oncomplete = () => {
