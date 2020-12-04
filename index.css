@@ -1,23 +1,4 @@
-body * {
-  display: block;
-}
-
-#title {
-  width: 300px;
-  height: auto;
-}
-
-#body {
-  width: 300px;
-  height: auto;
-}
-
-#memos {
-  background: #777777;
-  padding: 10px;
-}
-
-.container {
-  background: #ffffff;
-  margin: 10px;
+#list {
+  margin: 0;
+  padding: 0;
 }
