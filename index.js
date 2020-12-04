@@ -76,14 +76,7 @@ function output(id) {
 
   getRequest.onsuccess = event => {
     const memo = event.target.result;
-    list.innerHTML += `<div class="card my-3">`+
-    `<div class="card-header">ID: ${id}</div>`+
-    `<div class="card-body">`+
-    `<h5 class="card-title">${memo.title}</h5>`+
-    `<p class="card-text">${memo.body}</p>`+
-    `</div><div class="card-footer text-muted">${memo.writeDate}</div></div>`;
-
-    // container.onclick = (e) => del(e.target.dataset.id);
+    list.innerHTML += `<div class="card my-3" data-id="${id}"><div class="card-header">ID: ${id}</div><div class="card-body"><h5 class="card-title">${memo.title}</h5><p class="card-text">${memo.body}</p></div><div class="card-footer text-muted">${memo.writeDate}<button class="btn btn-danger" onclick="del(${id})">削除</button></div></div>`;
   }
 
   transaction.oncomplete = () => {
@@ -91,17 +84,17 @@ function output(id) {
   }
 }
 
-// function del(id) {
-//   const transaction = database.transaction(storeName, 'readwrite');
-//   const objectStore = transaction.objectStore(storeName);
-//   const deleteRequest = objectStore.delete(id);
+function del(id) {
+  const transaction = database.transaction(storeName, 'readwrite');
+  const objectStore = transaction.objectStore(storeName);
+  const deleteRequest = objectStore.delete(id);
 
-//   deleteRequest.onsuccess = event => {
-//     console.info('削除が完了しました');
-//     // document.querySelector(`div[data-id="${id}"]`).remove();
-//   }
+  deleteRequest.onsuccess = event => {
+    console.info('削除が完了しました');
+    document.querySelector(`div[data-id="${id}"]`).remove();
+  }
 
-//   transaction.oncomplete = () => {
-//     console.info('トランザクションが正常に完了しました');
-//   }
-// }
+  transaction.oncomplete = () => {
+    console.info('トランザクションが正常に完了しました');
+  }
+}
