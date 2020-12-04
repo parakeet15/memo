@@ -48,7 +48,9 @@ window.onload = () => {
 
 function save() {
   if (title.value.length === 0 || body.value.length === 0) {
-    window.alert('タイトルまたはテキストが入力されていません');
+    alert('タイトルまたはテキストが入力されていません');
+    title.value = null;
+    body.value = null;
     return;
   }
 
