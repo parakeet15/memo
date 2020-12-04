@@ -1,1 +1,1 @@
-[GitHub Pages](https://parakeet15.github.io/memo/ "index.html")
+[GitHub Pages](https://parakeet15.github.io/memo/)
