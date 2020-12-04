@@ -23,7 +23,7 @@ window.onload = () => {
 
   openRequest.onupgradeneeded = event => {
     database = event.target.result;
-    database.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+    database.createObjectStore(storeName, { keyPath: 'id' });
     // const objectStore = database.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
     // objectStore.createIndex('title', 'title', { unique: false });
     // objectStore.createIndex('body', 'body', { unique: false });
@@ -31,14 +31,15 @@ window.onload = () => {
   }
 
   openRequest.onsuccess = event => {
-    database = event.target.result;
-    const transaction = database.transaction(storeName, 'readonly');
-    const objectStore = transaction.objectStore(storeName);
-    const getAllKeysRequest = objectStore.getAllKeys();
-    getAllKeysRequest.onsuccess = e => {
-      const allKeys = e.target.result;
-      allKeys.forEach(id => output(id));
-    }
+    console.info('データベースの作成に成功しました');
+    // database = event.target.result;
+    // const transaction = database.transaction(storeName, 'readonly');
+    // const objectStore = transaction.objectStore(storeName);
+    // const getAllKeysRequest = objectStore.getAllKeys();
+    // getAllKeysRequest.onsuccess = e => {
+    //   const allKeys = e.target.result;
+    //   allKeys.forEach(id => output(id));
+    // }
 
     // 汎用エラーハンドラ
     database.onerror = event => {
@@ -56,7 +57,7 @@ function save() {
 
   const transaction = database.transaction(storeName, 'readwrite');
   const objectStore = transaction.objectStore(storeName);
-  const addRequest = objectStore.add(memo);
+  const addRequest = objectStore.add(memo, 'fastItem');
 
   addRequest.onsuccess = event => {
     const id = event.target.result;
