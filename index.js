@@ -60,8 +60,6 @@ function save() {
     output(id);
 
     console.info(`保存しました: ${id}`);
-    // 保存完了後 10 秒後に削除（削除テスト）
-    // setTimeout(del.bind(null, id), 10000);
   }
 
   transaction.oncomplete = () => {
@@ -76,7 +74,7 @@ function output(id) {
 
   getRequest.onsuccess = event => {
     const memo = event.target.result;
-    list.innerHTML += `<div class="card my-3" data-id="${id}"><div class="card-header">ID: ${id}</div><div class="card-body"><h5 class="card-title">${memo.title}</h5><p class="card-text">${memo.body}</p></div><div class="card-footer text-muted">${memo.writeDate}<button class="btn btn-danger" onclick="del(${id})">削除</button></div></div>`;
+    list.innerHTML += `<div class="card my-3" data-id="${id}"><div class="card-header">ID: ${id}</div><div class="card-body"><h5 class="card-title">${memo.title}</h5><p class="card-text">${memo.body}</p></div><div class="card-footer text-muted">${memo.writeDate}<button class="btn btn-danger float-right" onclick="del(${id})">削除</button></div></div>`;
   }
 
   transaction.oncomplete = () => {
