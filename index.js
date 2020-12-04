@@ -45,11 +45,18 @@ window.onload = () => {
 }
 
 function save() {
-  const title = document.getElementById('title').value;
-  const body = document.getElementById('body').value;
+  const title = document.getElementById('title');
+  const body = document.getElementById('body');
   const writeDate = new Date().toLocaleString();
 
-  const memo = { title, body, writeDate };
+  const memo = {
+    title: title.value,
+    body: body.value,
+    writeDate
+  };
+
+  title.value = null;
+  body.value = null;
 
   const transaction = database.transaction(storeName, 'readwrite');
   const objectStore = transaction.objectStore(storeName);
