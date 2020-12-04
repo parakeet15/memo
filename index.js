@@ -1,5 +1,7 @@
 'use strict';
 
+const title = document.getElementById('title');
+const body = document.getElementById('body');
 const list = document.getElementById('list');
 const saveButton = document.getElementById('save');
 saveButton.addEventListener('click', save);
@@ -45,14 +47,13 @@ window.onload = () => {
 }
 
 function save() {
-  const title = document.getElementById('title');
-  const body = document.getElementById('body');
-  const writeDate = new Date().toLocaleString();
+  if (title.value.length === 0 || body.value.length === 0)
+    window.alert('タイトルまたはテキストが入力されていません');
 
   const memo = {
     title: title.value,
     body: body.value,
-    writeDate
+    writeDate: new Date().toLocaleString()
   };
 
   title.value = null;
