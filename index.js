@@ -1,5 +1,13 @@
 'use strict';
 
+const saveButton = document.getElementById('save-button');
+const deleteButton = document.getElementById('delete-button');
+saveButton.addEventListener('click', save);
+deleteButton.addEventListener('click', () => {
+  const id = window.prompt('削除したいデータの ID を入力してください');
+  del(id);
+});
+
 const databaseName = 'memo';
 const storeName = 'memoes';
 
@@ -48,11 +56,12 @@ function save() {
 
   const transaction = database.transaction(storeName, 'readwrite');
   const objectStore = transaction.objectStore(storeName);
-  const putRequest = objectStore.put(memo);
+  const addRequest = objectStore.add(memo);
 
-  putRequest.onsuccess = event => {
+  addRequest.onsuccess = event => {
     const id = event.target.result;
-    output(id);
+    console.info(`ID: ${id}`);
+    // output(id);
   }
 
   transaction.oncomplete = () => {
@@ -60,53 +69,50 @@ function save() {
   }
 }
 
-const saveButton = document.getElementById('save-button');
-saveButton.addEventListener('click', save);
+// function output(id) {
+//   const transaction = database.transaction(storeName, 'readonly');
+//   const objectStore = transaction.objectStore(storeName);
+//   const getRequest = objectStore.get(id);
 
-function output(id) {
-  const transaction = database.transaction(storeName, 'readonly');
-  const objectStore = transaction.objectStore(storeName);
-  const getRequest = objectStore.get(id);
+//   getRequest.onsuccess = event => {
+//     const memo = event.target.result;
 
-  getRequest.onsuccess = event => {
-    const memo = event.target.result;
+//     const container = document.createElement('div');
+//     const title = document.createElement('h3');
+//     const body = document.createElement('p');
+//     const writeDate = document.createElement('p');
 
-    const container = document.createElement('div');
-    const title = document.createElement('h3');
-    const body = document.createElement('p');
-    const writeDate = document.createElement('p');
+//     container.className = 'container';
+//     container.dataset.id = id;
 
-    container.className = 'container';
-    container.dataset.id = id;
+//     title.innerText = memo.title;
+//     body.innerText = memo.body;
+//     writeDate.innerText = memo.writeDate;
 
-    title.innerText = memo.title;
-    body.innerText = memo.body;
-    writeDate.innerText = memo.writeDate;
+//     container.appendChild(title);
+//     container.appendChild(body);
+//     container.appendChild(writeDate);
+//     document.getElementById('memoes').appendChild(container);
 
-    container.appendChild(title);
-    container.appendChild(body);
-    container.appendChild(writeDate);
-    document.getElementById('memoes').appendChild(container);
+//     container.onclick = (e) => del(e.target.dataset.id);
+//   }
 
-    container.onclick = (e) => del(e.target.dataset.id);
-  }
-
-  transaction.oncomplete = () => {
-    console.info('トランザクションが完了しました');
-  }
-}
+//   transaction.oncomplete = () => {
+//     console.info('トランザクションが完了しました');
+//   }
+// }
 
 function del(id) {
-  console.log(id);
   const transaction = database.transaction(storeName, 'readwrite');
   const objectStore = transaction.objectStore(storeName);
-  const deleteRequest = objectStore.clear();
+  const deleteRequest = objectStore.delete(id);
 
   deleteRequest.onsuccess = event => {
+    console.info('削除が完了しました');
     // document.querySelector(`div[data-id="${id}"]`).remove();
   }
 
   transaction.oncomplete = () => {
-    console.info('削除が完了しました');
+    console.info('トランザクションが正常に完了しました');
   }
 }
