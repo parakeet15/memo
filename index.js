@@ -47,8 +47,10 @@ window.onload = () => {
 }
 
 function save() {
-  if (title.value.length === 0 || body.value.length === 0)
+  if (title.value.length === 0 || body.value.length === 0) {
     window.alert('タイトルまたはテキストが入力されていません');
+    return;
+  }
 
   const memo = {
     title: title.value,
