@@ -32,7 +32,7 @@ window.onload = () => {
 
   openRequest.onsuccess = event => {
     console.info('データベースの作成に成功しました');
-    // database = event.target.result;
+    database = event.target.result;
     // const transaction = database.transaction(storeName, 'readonly');
     // const objectStore = transaction.objectStore(storeName);
     // const getAllKeysRequest = objectStore.getAllKeys();
