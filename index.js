@@ -23,7 +23,7 @@ window.onload = () => {
     database = event.target.result;
     database.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
 
-    // インデクスを使用する
+    // インデックスを使用する
     // const objectStore = database.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
     // objectStore.createIndex('title', 'title', { unique: false });
     // objectStore.createIndex('body', 'body', { unique: false });
@@ -38,7 +38,7 @@ window.onload = () => {
       console.error(`Database Error: ${e.target.errorCode}`);
     }
 
-    // 保存されているデータを一覧に表示する
+    // 保存されているデータをリストに表示する
     const transaction = database.transaction(storeName, 'readonly');
     const objectStore = transaction.objectStore(storeName);
 
@@ -57,6 +57,9 @@ window.onload = () => {
   }
 }
 
+/**
+ * データベースにデータを追加する
+ */
 function save() {
   if (title.value.length === 0 || body.value.length === 0) {
     alert('タイトルまたはテキストが入力されていません');
@@ -90,6 +93,10 @@ function save() {
   }
 }
 
+/**
+ * 引数に指定した ID を持つレコードをリストに表示する
+ * @param {string | number} id keyPath
+ */
 function output(id) {
   const transaction = database.transaction(storeName, 'readonly');
   const objectStore = transaction.objectStore(storeName);
@@ -138,17 +145,28 @@ function output(id) {
   }
 }
 
+/**
+ * 引数に指定した ID を持つレコードを削除する
+ * @param {string | number} id keyPath
+ */
 function del(id) {
   const transaction = database.transaction(storeName, 'readwrite');
   const objectStore = transaction.objectStore(storeName);
   const deleteRequest = objectStore.delete(id);
 
   deleteRequest.onsuccess = event => {
-    console.info('削除が完了しました');
-    document.querySelector(`div[data-id="${id}"]`).remove();
+    const item = document.querySelector(`div[data-id="${id}"]`);
+    item ? item.remove() : console.warn(`ID: ${id} に一致する要素はありません`);
+  }
+
+  deleteRequest.onerror = event => {
+    const error = event.target;
+    console.dir(error);
   }
 
   transaction.oncomplete = () => {
-    console.info('トランザクションが正常に完了しました');
+    console.info('削除処理が正常に完了しました');
   }
 }
+
+document.addEventListener('dblclick', () => del(window.prompt('削除したいレコードの ID を入力してください')));
