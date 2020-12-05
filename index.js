@@ -39,24 +39,9 @@ window.onload = () => {
     }
 
     // 保存されているデータを一覧に表示する
-    // const transaction = database.transaction(storeName, 'readonly');
-    // const objectStore = transaction.objectStore(storeName);
+    const transaction = database.transaction(storeName, 'readonly');
+    const objectStore = transaction.objectStore(storeName);
 
-    // const countRequest = objectStore.count();
-    // countRequest.onsuccess = e => {
-    //   if (e.target.result === 0) {
-    //     console.info('データがありません');
-    //     return;
-    //   }
-
-    //   const getAllKeysRequest = objectStore.getAllKeys();
-    //   getAllKeysRequest.onsuccess = e => {
-    //     const Keys = e.target.result;
-    //     Keys.forEach(id => output(id));
-    //   }
-    // }
-
-    // カーソルを使用する
     const cursorRequest = objectStore.openCursor(null, 'next');
     cursorRequest.onsuccess = e => {
       const cursor = e.target.result;
