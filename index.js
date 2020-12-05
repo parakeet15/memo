@@ -112,7 +112,7 @@ function output(id) {
     cardFooter.classList.add('card-footer', 'text-muted');
     cardTitle.classList.add('card-title');
     cardText.classList.add('card-text');
-    button.classList.add('btn', 'btn-denger', 'float-right');
+    button.classList.add('btn', 'btn-danger', 'float-right');
 
     card.dataset.id = id;
     button.setAttribute('onclick', `del(${id})`);
