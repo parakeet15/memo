@@ -22,6 +22,8 @@ window.onload = () => {
   openRequest.onupgradeneeded = event => {
     database = event.target.result;
     database.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+
+    // インデクスを使用する
     // const objectStore = database.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
     // objectStore.createIndex('title', 'title', { unique: false });
     // objectStore.createIndex('body', 'body', { unique: false });
@@ -30,19 +32,43 @@ window.onload = () => {
 
   openRequest.onsuccess = event => {
     database = event.target.result;
+    console.info('データベースへの接続に成功しました');
+
+    database.onerror = e => {
+      console.error(`Database Error: ${e.target.errorCode}`);
+    }
+
+    // 保存されているデータを一覧に表示する
     const transaction = database.transaction(storeName, 'readonly');
     const objectStore = transaction.objectStore(storeName);
-    const getAllKeysRequest = objectStore.getAllKeys();
-    getAllKeysRequest.onsuccess = e => {
-      const Keys = e.target.result;
-      Keys.forEach(id => output(id));
+
+    const countRequest = objectStore.count();
+    countRequest.onsuccess = e => {
+      if (e.target.result === 0) {
+        console.info('データがありません');
+        return;
+      }
+
+      const getAllKeysRequest = objectStore.getAllKeys();
+      getAllKeysRequest.onsuccess = e => {
+        const Keys = e.target.result;
+        Keys.forEach(id => output(id));
+      }
     }
 
-    database.onerror = event => {
-      console.error(`Database Error: ${event.target.errorCode}`);
+    // カーソルを使用する
+    const cursorRequest = objectStore.openCursor(null, 'prev');
+    cursorRequest.onsuccess = evt => {
+      const cursor = evt.target.result;
+      if (cursor === null) return;
+      console.dir(cursor.value);
+      cursor.advance(1);
     }
+  }
 
-    console.info('データベースへの接続に成功しました');
+  openRequest.onerror = event => {
+    alert('データベースへの接続に失敗しました');
+    console.error('データベースへの接続に失敗しました');
   }
 }
 
@@ -86,7 +112,7 @@ function output(id) {
 
   getRequest.onsuccess = event => {
     const memo = event.target.result;
-    list.innerHTML += `<div class="card my-3" data-id="${id}"><div class="card-header">ID: ${id}</div><div class="card-body"><h5 class="card-title">${memo.title}</h5><p class="card-text">${memo.body}</p></div><div class="card-footer text-muted">${memo.writeDate}<button class="btn btn-danger float-right" onclick="del(${id})">削除</button></div></div>`;
+    list.innerHTML = `<div class="card my-3" data-id="${id}"><div class="card-header">ID: ${id}</div><div class="card-body"><h5 class="card-title">${memo.title}</h5><p class="card-text">${memo.body}</p></div><div class="card-footer text-muted">${memo.writeDate}<button class="btn btn-danger float-right" onclick="del(${id})">削除</button></div></div>` + list.innerHTML;
   }
 
   transaction.oncomplete = () => {
