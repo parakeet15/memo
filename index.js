@@ -3,6 +3,7 @@
 const title = document.getElementById('title');
 const body = document.getElementById('body');
 const list = document.getElementById('list');
+
 const saveButton = document.getElementById('save');
 saveButton.addEventListener('click', save);
 
@@ -158,8 +159,6 @@ function del(id) {
     const item = document.querySelector(`div[data-id="${id}"]`);
     item ? item.remove() : console.warn(`ID: ${id} に一致する要素はありません`);
   }
-
-  transaction.abort(); // 検証用
 
   transaction.oncomplete = () => {
     console.info('データの削除処理が正常に完了しました', `ID: ${id}`);
