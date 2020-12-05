@@ -81,15 +81,15 @@ function save() {
   const objectStore = transaction.objectStore(storeName);
   const addRequest = objectStore.add(memo);
 
-  addRequest.onsuccess = event => {
-    const id = event.target.result;
-    output(id);
+  let id = null;
 
-    console.info(`保存しました: ${id}`);
+  addRequest.onsuccess = event => {
+    id = event.target.result;
+    output(id);
   }
 
   transaction.oncomplete = () => {
-    console.info('トランザクションが正常に完了しました');
+    console.info('データの保存処理が正常に完了しました', `ID: ${id}`);
   }
 }
 
@@ -141,7 +141,7 @@ function output(id) {
   }
 
   transaction.oncomplete = () => {
-    console.info('トランザクションが完了しました');
+    console.info('データの取得処理が正常に完了しました', `ID: ${id}`);
   }
 }
 
@@ -156,12 +156,12 @@ function del(id) {
 
   deleteRequest.onsuccess = event => {
     const item = document.querySelector(`div[data-id="${id}"]`);
-    item ? item.remove() : console.warn(`ID:${id} に一致する要素はありません`);
+    item ? item.remove() : console.warn(`ID: ${id} に一致する要素はありません`);
   }
+
+  transaction.abort(); // 検証用
 
   transaction.oncomplete = () => {
-    console.info('削除処理が正常に完了しました');
+    console.info('データの削除処理が正常に完了しました', `ID: ${id}`);
   }
 }
-
-document.addEventListener('dblclick', () => del(window.prompt('削除したいレコードの ID を入力してください')));
