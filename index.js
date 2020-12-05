@@ -156,12 +156,7 @@ function del(id) {
 
   deleteRequest.onsuccess = event => {
     const item = document.querySelector(`div[data-id="${id}"]`);
-    item ? item.remove() : console.warn(`ID: ${id} に一致する要素はありません`);
-  }
-
-  deleteRequest.onerror = event => {
-    const error = event.target;
-    console.dir(error);
+    item ? item.remove() : console.warn(`ID:${id} に一致する要素はありません`);
   }
 
   transaction.oncomplete = () => {
