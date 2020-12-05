@@ -57,7 +57,7 @@ window.onload = () => {
     // }
 
     // カーソルを使用する
-    const cursorRequest = objectStore.openCursor(null, 'prev');
+    const cursorRequest = objectStore.openCursor(null, 'next');
     cursorRequest.onsuccess = e => {
       const cursor = e.target.result;
       if (cursor === null) return;
@@ -112,7 +112,40 @@ function output(id) {
 
   getRequest.onsuccess = event => {
     const memo = event.target.result;
-    list.innerHTML = `<div class="card my-3" data-id="${id}"><div class="card-header">ID: ${id}</div><div class="card-body"><h5 class="card-title">${memo.title}</h5><p class="card-text">${memo.body}</p></div><div class="card-footer text-muted">${memo.writeDate}<button class="btn btn-danger float-right" onclick="del(${id})">削除</button></div></div>` + list.innerHTML;
+
+    const card = document.createElement('div');
+    const cardHeader = document.createElement('div');
+    const cardBody = document.createElement('div');
+    const cardFooter = document.createElement('div');
+    const cardTitle = document.createElement('h5');
+    const cardText = document.createElement('p');
+    const button = document.createElement('button');
+
+    card.classList.add('card', 'my-3');
+    cardHeader.classList.add('card-header');
+    cardBody.classList.add('card-body');
+    cardFooter.classList.add('card-footer', 'text-muted');
+    cardTitle.classList.add('card-title');
+    cardText.classList.add('card-text');
+    button.classList.add('btn', 'btn-denger', 'float-right');
+
+    card.dataset.id = id;
+    button.setAttribute('onclick', `del(${id})`);
+
+    cardHeader.innerText = `ID: ${id}`;
+    cardTitle.innerText = memo.title;
+    cardText.innerText = memo.body;
+    cardFooter.innerText = memo.writeDate;
+    button.innerText = '削除';
+
+    cardBody.appendChild(cardTitle);
+    cardBody.appendChild(cardText);
+    cardFooter.appendChild(button);
+
+    card.appendChild(cardHeader);
+    card.appendChild(cardBody);
+    card.appendChild(cardFooter);
+    list.insertBefore(card, list.firstChild);
   }
 
   transaction.oncomplete = () => {
